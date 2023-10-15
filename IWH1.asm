@@ -6,7 +6,6 @@
 	 
 .text
 main:
-	print_str("Ââåäèòå êîëè÷åñòâî ýëåìåíòîâ ìàññèâà: ")
 	read_int(s1)
 	check_n(s1)
 	read_array(s1, arr_A)
