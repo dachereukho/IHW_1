@@ -19,6 +19,9 @@ passed:
 	li t1 1
 	la t2 %z
 
+	li t3 1
+	beq %x t3 single
+
 # Filling with numbers in odd places
 loop_fill_odd:
 	lw t3 (t0)
@@ -29,7 +32,8 @@ loop_fill_odd:
     addi t2 t2 4
     
     blt t1 %x loop_fill_odd
-    
+
+single:
 	la t0 %y
 	li t1 0 
 	
