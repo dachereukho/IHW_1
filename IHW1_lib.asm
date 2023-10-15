@@ -1,4 +1,4 @@
-# Ïðîâåðêà êîððåêòíîñòè ââåä¸ííîãî êîëè÷åñòâà ÷èñåë(%x - êîëè÷åñòâî ÷èñåë)
+# Checking the correctness of the entered amount of numbers (%x - amount of numbers)
 .macro check_n(%x)
 	blez %x input_error
 	li t0 10
@@ -6,20 +6,20 @@
 	j passed
 	
 input_error:
-	print_str("Îøèáêà! Íåêîððåêòíûå âõîäíûå äàííûå")
+	print_str("Error! Invalid input data")
 	exit()
-	
+		
 passed:
 .end_macro
 
-# Çàïîëíåíå ìàññèâà(%x - ðàçìåð ìàññèâîâ, %y - ìàññèâ A, èç êîòîðîãî áåðóòñÿ ýëåìåíòû, %z - ìàññèâ B, êîòîðûé çàïîëíÿåòñÿ)
+# Filling the array(%x - size of the arrays, %y - array A from which elements are taken, %z - array B which is filled)
 .macro fill_array(%x, %y, %z)
 	la t0 %y
 	addi t0 t0 4
 	li t1 1
 	la t2 %z
 
-# Çàïîëíåíèå ÷èñëàìè, ñòîÿùèìè íà íå÷¸òíûõ ìåñòàõ
+# Filling with numbers in odd places
 loop_fill_odd:
 	lw t3 (t0)
 	sw t3 (t2)
@@ -33,7 +33,7 @@ loop_fill_odd:
 	la t0 %y
 	li t1 0 
 	
-# Çàïîëíåíèå ÷èñëàìè, ñòîÿùèìè íà ÷¸òíûõ ìåñòå
+# Filling with numbers in even places
 loop_fill_even:
 	lw t3 (t0)
 	sw t3 (t2)
@@ -46,13 +46,12 @@ loop_fill_even:
 .end_macro
 	
 
-# Ââîä ìàññèâà(%x - ðàçìåð ìàññèâà, %y - ìàññèâ äëÿ ââîäà)
+# Array input(%x - array size, %y - input array)
 .macro read_array(%x, %y)
 	la t0 %y
 	li t1 0 
 	
 loop_read:
-	print_str("Ââåäèòå ýëåìåíò ìàññèâà: ")
 	read_int_a0()
 	
 	sw a0 (t0)
@@ -62,7 +61,7 @@ loop_read:
     blt t1 %x loop_read
 .end_macro
 
-# Âûâîä ìàññèâà(%x - ðàçìåð ìàññèâà, %y - âûâîäèìûé ìàññèâ)
+# Output array(%x - array size, %y - output array)
 .macro print_array(%x, %y)
 	la t0 %y
 	li t1 0
@@ -78,14 +77,14 @@ loop_print:
     
 .end_macro
 
-# Âûâîä ÷èñëà èç ðåãèñòðà %x
+# Output a number from register %x
 .macro print_int(%x)
 	li a7 1
 	mv a0 %x
 	ecall
 .end_macro
 
-# Ââîä ÷èñëà â ðåãèñòð %x
+# Input a number into register %x
 .macro read_int(%x)
    push(a0)
    li a7 5
@@ -94,13 +93,13 @@ loop_print:
    pop(a0)
 .end_macro
 
-# Ââîä ÷èñëà â ðåãèñòð a0
+# Input a number into register a0
 .macro read_int_a0()
    li a7 5
    ecall
 .end_macro
 
-# Âûâîä ñòðîêè %x
+# Print the string %x
 .macro print_str(%x)
    .data
 str:
@@ -113,36 +112,36 @@ str:
    pop	(a0)
    .end_macro
 
-# Âûâîä ñèìâîëà %x
+# Print the symbol %x
 .macro print_char(%x)
    li a7 11
    li a0 %x
    ecall
 .end_macro
 
-# Ïåðåâîä ñòðîêè
+# Go to new line
 .macro newline
 	print_char('\n')
 .end_macro
 
-# Âûâîä ïðîáåëà
+# Output space
 .macro space
 	print_char(' ')
 .end_macro
 
-# Çàâåðøåíèå ïðîãðàììû
+# End the program
 .macro exit
     li a7 10
     ecall
 .end_macro
 
-# Ñîõðàíåíèå íà ñòåêå çíà÷åíèÿ â ðåãèñòðå %x
+# Storing the value in register %x on the stack
 .macro push(%x)
 	addi sp sp -4
 	sw %x (sp)
 .end_macro
 
-# Îñâîáîæäåíèå ñòåêà è ñîõðàíåíèå óáðàííîãî çíà÷åíèÿ â ðåãèñòðå %x
+# Free the stack and store the removed value in register %x
 .macro pop(%x)
 	lw %x (sp)
 	addi sp sp 4
