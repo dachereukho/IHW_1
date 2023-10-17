@@ -78,49 +78,52 @@ loop_print:
 	addi t0 t0 4
     addi t1 t1 1
     blt t1 %x loop_print
-    
 .end_macro
 
 # Output a number from register %x
 .macro print_int(%x)
+	push(a0)
 	li a7 1
 	mv a0 %x
 	ecall
+	pop(a0)
 .end_macro
 
 # Input a number into register %x
 .macro read_int(%x)
-   push(a0)
-   li a7 5
-   ecall
-   mv %x a0
-   pop(a0)
+	push(a0)
+	li a7 5
+	ecall
+	mv %x a0
+	pop(a0)
 .end_macro
 
 # Input a number into register a0
 .macro read_int_a0()
-   li a7 5
-   ecall
+	li a7 5
+	ecall
 .end_macro
 
 # Print the string %x
 .macro print_str(%x)
-   .data
+	.data
 str:
-   .asciz %x
-   .text
-   push (a0)
-   li a7 4
-   la a0 str
-   ecall
-   pop	(a0)
-   .end_macro
+	.asciz %x
+	.text
+	push (a0)
+	li a7 4
+	la a0 str
+   	ecall
+   	pop	(a0)
+.end_macro
 
 # Print the symbol %x
 .macro print_char(%x)
-   li a7 11
-   li a0 %x
-   ecall
+	push(a0)
+	li a7 11
+	li a0 %x
+	ecall
+	pop(a0)
 .end_macro
 
 # Go to new line
