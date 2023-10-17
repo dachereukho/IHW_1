@@ -6,6 +6,7 @@
 	 
 .text
 main:
+	# Register s1 stores the size of the array
 	read_int(s1)
 	check_n(s1)
 	read_array(s1, arr_A)
